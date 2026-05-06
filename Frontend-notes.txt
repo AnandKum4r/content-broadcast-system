@@ -1,0 +1,60 @@
+PROJECT STRUCTURE
+-----------------
+The application follows a scalable feature-based architecture.
+
+Folders are separated by responsibility:
+- features/
+- components/
+- services/
+- hooks/
+- routes/
+- utils/
+
+AUTHENTICATION FLOW
+-------------------
+- User logs in using email/password.
+- Auth service validates credentials.
+- Token and user are stored in localStorage.
+- AuthContext restores session on refresh.
+- Protected routes prevent unauthorized access.
+
+ROLE-BASED ROUTING
+------------------
+Teacher Routes:
+- /teacher/dashboard
+- /teacher/upload
+- /teacher/content
+
+Principal Routes:
+- /principal/dashboard
+- /principal/pending
+- /principal/content
+
+Public Route:
+- /live/:teacherId
+
+API INTEGRATION APPROACH
+------------------------
+- All API logic is isolated inside service files.
+- Components never call APIs directly.
+- Mock APIs simulate real backend behavior.
+- React Query manages server state.
+
+STATE MANAGEMENT
+----------------
+- Context API handles authentication state.
+- React Query handles API/server state.
+- React Hook Form manages form state.
+
+PERFORMANCE OPTIMIZATION
+------------------------
+- React.memo used for reusable tables
+- useMemo used for filtering
+- Lazy image loading enabled
+- React Query caching enabled
+
+ASSUMPTIONS
+-----------
+- Backend APIs are mocked.
+- JWT validation is simulated.
+- Uploads are frontend-only.
