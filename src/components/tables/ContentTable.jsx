@@ -1,9 +1,6 @@
 // src/components/tables/ContentTable.jsx
-
 import { memo } from "react";
-
 import StatusBadge from "@/components/common/StatusBadge";
-
 import {
   Table,
   TableBody,
@@ -12,95 +9,80 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Calendar } from "lucide-react";
 
-/*
-  Memoized table for performance
-*/
-
-const ContentTable = ({
-  data,
-  actions,
-}) => {
+const ContentTable = ({ data, actions }) => {
   return (
-    <div className="rounded-xl border bg-white">
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-slate-50/50">
           <TableRow>
-            <TableHead>
+            <TableHead className="w-[100px] font-semibold text-slate-700">
               Preview
             </TableHead>
-
-            <TableHead>
-              Title
+            <TableHead className="font-semibold text-slate-700">
+              Content Details
             </TableHead>
-
-            <TableHead>
-              Subject
-            </TableHead>
-
-            <TableHead>
+            <TableHead className="font-semibold text-slate-700">
               Teacher
             </TableHead>
-
-            <TableHead>
+            <TableHead className="font-semibold text-slate-700 text-center">
               Status
             </TableHead>
-
-            <TableHead>
+            <TableHead className="font-semibold text-slate-700">
               Schedule
             </TableHead>
-
             {actions && (
-              <TableHead>
+              <TableHead className="text-right font-semibold text-slate-700">
                 Actions
               </TableHead>
             )}
           </TableRow>
         </TableHeader>
-
         <TableBody>
           {data.map((item) => (
-            <TableRow key={item.id}>
+            <TableRow
+              key={item.id}
+              className="group transition-colors hover:bg-slate-50/50"
+            >
               <TableCell>
-                <img
-                  src={item.preview}
-                  alt={item.title}
-                  className="h-14 w-20 rounded-md object-cover"
-                  loading="lazy"
-                />
+                <div className="relative h-14 w-20 overflow-hidden rounded-lg border border-slate-100 shadow-sm">
+                  <img
+                    src={item.preview}
+                    alt={item.title}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                </div>
               </TableCell>
-
-              <TableCell className="font-medium">
-                {item.title}
-              </TableCell>
-
               <TableCell>
-                {item.subject}
+                <div className="flex flex-col">
+                  <span className="font-bold text-slate-900">{item.title}</span>
+                  <span className="text-xs font-medium text-indigo-600 uppercase tracking-wider">
+                    {item.subject}
+                  </span>
+                </div>
               </TableCell>
-
-              <TableCell>
+              <TableCell className="text-slate-600 font-medium">
                 {item.teacherName}
               </TableCell>
-
+              <TableCell className="text-center">
+                <StatusBadge status={item.status} />
+              </TableCell>
               <TableCell>
-                <StatusBadge
-                  status={item.status}
-                />
-              </TableCell>
-
-              <TableCell className="text-sm text-gray-500">
-                <div>
-                  {item.startTime}
-                </div>
-
-                <div>
-                  {item.endTime}
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
+                  <Calendar size={14} className="text-slate-400" />
+                  <div className="flex flex-col leading-tight">
+                    <span>{item.startTime}</span>
+                    <span className="text-[10px] text-slate-400">
+                      to {item.endTime}
+                    </span>
+                  </div>
                 </div>
               </TableCell>
-
               {actions && (
-                <TableCell>
-                  {actions(item)}
+                <TableCell className="text-right">
+                  <div className="flex justify-end">{actions(item)}</div>
                 </TableCell>
               )}
             </TableRow>

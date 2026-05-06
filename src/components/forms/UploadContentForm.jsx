@@ -1,23 +1,14 @@
 // src/components/forms/UploadContentForm.jsx
 
 import { useState } from "react";
-
 import { useMutation } from "@tanstack/react-query";
-
 import { useForm } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { toast } from "sonner";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import { Textarea } from "@/components/ui/textarea";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
+import { ImagePlus, Clock, Info } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -26,9 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { uploadSchema } from "@/features/teacher/utils/uploadSchema";
-
 import { uploadContent } from "@/features/teacher/services/teacher.service";
 
 const UploadContentForm = () => {
@@ -132,153 +121,185 @@ const UploadContentForm = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Upload Content</CardTitle>
-      </CardHeader>
+    <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Left Column: Media & Info */}
+            <div className="space-y-6">
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-6 text-indigo-600 font-bold">
+                  <Info size={18} />
+                  <h3>Content Details</h3>
+                </div>
 
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            {/* Title */}
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="e.g., Q2 Mathematics Seminar"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormField
+                    control={form.control}
+                    name="subject"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Subject</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="e.g., Advanced Calculus"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                  <FormControl>
-                    <Input placeholder="Enter title" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Subject */}
-
-            <FormField
-              control={form.control}
-              name="subject"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subject</FormLabel>
-
-                  <FormControl>
-                    <Input placeholder="Enter subject" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Description */}
-
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-
-                  <FormControl>
-                    <Textarea placeholder="Enter description" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* File Upload */}
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Upload File</label>
-
-              <Input
-                type="file"
-                accept=".jpg,.jpeg,.png,.gif"
-                onChange={handleFileChange}
-              />
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            className="min-h-[100px]"
+                            placeholder="Briefly describe the content purpose..."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* Preview */}
+            {/* Right Column: Scheduling & Media */}
+            <div className="space-y-6">
+              {/* File Upload Section */}
+              <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-6 transition-all hover:bg-slate-50">
+                <div className="flex flex-col items-center text-center">
+                  {preview ? (
+                    <div className="relative group w-full">
+                      <img
+                        src={preview}
+                        alt="Preview"
+                        className="h-40 w-full rounded-xl object-cover border shadow-md"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => setPreview(null)}
+                        >
+                          Change Image
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <label className="cursor-pointer">
+                      <div className="mb-3 rounded-full bg-indigo-100 p-3 text-indigo-600 mx-auto w-fit">
+                        <ImagePlus size={24} />
+                      </div>
+                      <span className="text-sm font-bold text-slate-900 block">
+                        Click to upload media
+                      </span>
+                      <span className="text-xs text-slate-500">
+                        JPG, PNG or GIF (Max 10MB)
+                      </span>
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                      />
+                    </label>
+                  )}
+                </div>
+              </div>
 
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="h-48 w-full rounded-lg object-cover"
-              />
-            )}
+              {/* Scheduling Section */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-6 text-indigo-600 font-bold">
+                  <Clock size={18} />
+                  <h3>Scheduling</h3>
+                </div>
 
-            {/* Start Time */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="startTime"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Start</FormLabel>
+                          <FormControl>
+                            <Input type="datetime-local" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="endTime"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>End</FormLabel>
+                          <FormControl>
+                            <Input type="datetime-local" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-            <FormField
-              control={form.control}
-              name="startTime"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Start Time</FormLabel>
+                  <FormField
+                    control={form.control}
+                    name="rotationDuration"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Rotation Delay (Seconds)</FormLabel>
+                        <FormControl>
+                          <Input type="number" placeholder="10" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
-                  <FormControl>
-                    <Input type="datetime-local" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* End Time */}
-
-            <FormField
-              control={form.control}
-              name="endTime"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>End Time</FormLabel>
-
-                  <FormControl>
-                    <Input type="datetime-local" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Rotation Duration */}
-
-            <FormField
-              control={form.control}
-              name="rotationDuration"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rotation Duration</FormLabel>
-
-                  <FormControl>
-                    <Input placeholder="Example: 10 sec" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Submit */}
-
-            <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? "Uploading..." : "Upload Content"}
+          <div className="flex justify-end pt-4">
+            <Button
+              type="submit"
+              className="px-12 h-12 bg-indigo-600 hover:bg-indigo-700 text-lg font-bold shadow-lg"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? "Processing..." : "Publish Content"}
             </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 };
 

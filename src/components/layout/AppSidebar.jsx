@@ -1,64 +1,84 @@
 // src/components/layout/AppSidebar.jsx
 import { NavLink } from "react-router-dom";
-
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import {
+  LayoutDashboard,
+  UploadCloud,
+  FolderOpen,
+  ClipboardList,
+  Layers,
+} from "lucide-react";
 
 const AppSidebar = () => {
   const { user } = useAuth();
 
-  /*
-    Sidebar items based on role
-  */
-
   const teacherLinks = [
-    {
-      name: "Dashboard",
-      path: "/teacher/dashboard",
-    },
-    {
-      name: "Upload Content",
-      path: "/teacher/upload",
-    },
-    {
-      name: "My Content",
-      path: "/teacher/content",
-    },
+    { name: "Dashboard", path: "/teacher/dashboard", icon: LayoutDashboard },
+    { name: "Upload Content", path: "/teacher/upload", icon: UploadCloud },
+    { name: "My Content", path: "/teacher/content", icon: FolderOpen },
   ];
 
   const principalLinks = [
-    {
-      name: "Dashboard",
-      path: "/principal/dashboard",
-    },
+    { name: "Dashboard", path: "/principal/dashboard", icon: LayoutDashboard },
     {
       name: "Pending Approval",
       path: "/principal/pending",
+      icon: ClipboardList,
     },
-    {
-      name: "All Content",
-      path: "/principal/content",
-    },
+    { name: "All Content", path: "/principal/content", icon: Layers },
   ];
 
   const links = user?.role === "teacher" ? teacherLinks : principalLinks;
 
   return (
-    <aside className="w-64 border-r bg-gray-100 p-4">
-      <nav className="flex flex-col gap-2">
+    <aside className="hidden w-72 border-r border-slate-200 bg-white lg:flex flex-col">
+      <div className="p-6">
+        <div className="flex items-center gap-3 rounded-xl bg-indigo-600 p-3 text-white">
+          <div className="h-8 w-8 rounded-lg bg-white/20 flex items-center justify-center font-bold">
+            CP
+          </div>
+          <span className="font-bold tracking-tight">Content Management</span>
+        </div>
+      </div>
+
+      <nav className="flex-1 space-y-1 px-4">
         {links.map((link) => (
           <NavLink
             key={link.path}
             to={link.path}
             className={({ isActive }) =>
-              `rounded-lg px-4 py-2 ${
-                isActive ? "bg-black text-white" : "hover:bg-gray-200"
+              `group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
+                isActive
+                  ? "bg-indigo-50 text-indigo-600"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
               }`
             }
           >
-            {link.name}
+            {({ isActive }) => (
+              <>
+                <link.icon
+                  size={20}
+                  className={
+                    isActive
+                      ? "text-indigo-600"
+                      : "text-slate-400 group-hover:text-slate-600"
+                  }
+                />
+                {link.name}
+                {isActive && (
+                  <div className="ml-auto h-1.5 w-1.5 rounded-full bg-indigo-600" />
+                )}
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
+
+      <div className="p-4 border-t border-slate-100">
+        <div className="rounded-xl bg-slate-50 p-4 text-center text-xs text-slate-400 font-medium">
+          System v2.4.0 • 2026
+        </div>
+      </div>
     </aside>
   );
 };

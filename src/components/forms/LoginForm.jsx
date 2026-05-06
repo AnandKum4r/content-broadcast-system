@@ -1,20 +1,11 @@
 // src/components/forms/LoginForm.jsx
 import { useNavigate } from "react-router-dom";
-
 import { useMutation } from "@tanstack/react-query";
-
 import { useForm } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { toast } from "sonner";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import {
   Form,
   FormControl,
@@ -23,62 +14,31 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { loginSchema } from "@/features/auth/utils/loginSchema";
-
 import { loginUser } from "@/features/auth/services/auth.service";
-
 import { setAuthData } from "@/features/auth/utils/authStorage";
-
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-
   const { setUser } = useAuth();
-
-  /*
-    React Hook Form setup
-  */
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
-
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  /*
-    Login mutation
-  */
-
   const mutation = useMutation({
     mutationFn: loginUser,
-
     onSuccess: (data) => {
-      /*
-        Persist auth data
-      */
-
       setAuthData(data);
-
-      /*
-        Store user in context
-      */
-
       setUser(data.user);
-
-      /*
-        Success toast
-      */
-
-      toast.success("Login successful");
-
-      /*
-        Redirect based on role
-      */
+      toast.success("Welcome back!", {
+        description: `Logged in as ${data.user.role}`,
+      });
 
       if (data.user.role === "teacher") {
         navigate("/teacher/dashboard");
@@ -86,94 +46,144 @@ const LoginForm = () => {
         navigate("/principal/dashboard");
       }
     },
-
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error.message || "Invalid credentials");
     },
   });
-
-  /*
-    Submit handler
-  */
 
   const onSubmit = (values) => {
     mutation.mutate(values);
   };
 
   return (
-    <Card className="w-full max-w-md shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">Login</CardTitle>
-      </CardHeader>
+    <div className="space-y-6">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-slate-700 font-semibold">
+                  Email Address
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="name@institution.com"
+                    className="h-11 border-slate-200 focus:ring-2 focus:ring-indigo-500"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            {/* Email Field */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex items-center justify-between">
+                  <FormLabel className="text-slate-700 font-semibold">
+                    Password
+                  </FormLabel>
+                  <a
+                    href="#"
+                    className="text-xs font-medium text-indigo-600 hover:text-indigo-500"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="••••••••"
+                    className="h-11 border-slate-200 focus:ring-2 focus:ring-indigo-500"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
+          <Button
+            type="submit"
+            className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-70"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? (
+              <span className="flex items-center gap-2">
+                <svg
+                  className="animate-spin h-4 w-4 text-white"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Authenticating...
+              </span>
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+        </form>
+      </Form>
 
-                  <FormControl>
-                    <Input placeholder="Enter email" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Password Field */}
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Enter password"
-                      {...field}
-                    />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Submit Button */}
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? "Logging in..." : "Login"}
-            </Button>
-          </form>
-        </Form>
-
-        {/* Demo Credentials */}
-
-        <div className="mt-6 rounded-lg bg-gray-100 p-4 text-sm">
-          <p className="font-semibold">Demo Credentials</p>
-
-          <div className="mt-2 space-y-1">
-            <p>Teacher: teacher@test.com / 123456</p>
-
-            <p>Principal: principal@test.com / 123456</p>
-          </div>
+      {/* Separator */}
+      <div className="relative my-8">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-slate-200"></span>
         </div>
-      </CardContent>
-    </Card>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-white px-2 text-slate-500 lg:bg-slate-50">
+            Demo Access
+          </span>
+        </div>
+      </div>
+
+      {/* Demo Credentials Box */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <button
+          onClick={() => {
+            form.setValue("email", "teacher@test.com");
+            form.setValue("password", "123456");
+          }}
+          className="flex flex-col items-start rounded-lg border border-slate-200 p-3 text-left transition-hover hover:bg-slate-100 group"
+        >
+          <span className="text-xs font-bold text-slate-400 group-hover:text-indigo-600">
+            TEACHER
+          </span>
+          <span className="text-xs text-slate-600">teacher@test.com</span>
+        </button>
+
+        <button
+          onClick={() => {
+            form.setValue("email", "principal@test.com");
+            form.setValue("password", "123456");
+          }}
+          className="flex flex-col items-start rounded-lg border border-slate-200 p-3 text-left transition-hover hover:bg-slate-100 group"
+        >
+          <span className="text-xs font-bold text-slate-400 group-hover:text-indigo-600">
+            PRINCIPAL
+          </span>
+          <span className="text-xs text-slate-600">principal@test.com</span>
+        </button>
+      </div>
+    </div>
   );
 };
 

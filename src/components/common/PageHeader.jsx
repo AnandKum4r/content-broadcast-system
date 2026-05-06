@@ -1,11 +1,14 @@
 // src/components/common/PageHeader.jsx
-
 const PageHeader = ({ title, description }) => {
   return (
-    <div className="mb-6">
-      <h1 className="text-3xl font-bold">{title}</h1>
-
-      {description && <p className="mt-1 text-gray-500">{description}</p>}
+    <div className="relative mb-8 pb-2">
+      <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+        {title}
+      </h1>
+      {description && (
+        <p className="mt-2 text-lg text-slate-500 max-w-2xl">{description}</p>
+      )}
+      <div className="absolute bottom-0 left-0 h-1 w-20 bg-indigo-600 rounded-full" />
     </div>
   );
 };
