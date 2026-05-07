@@ -1,5 +1,9 @@
 // src/mock/mockData.js
 
+const now = new Date();
+const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
+const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
+
 export const users = [
   {
     id: 1,
@@ -27,8 +31,8 @@ export const contentData = [
     teacherId: 1,
     teacherName: "Rahul Teacher",
     preview: "https://images.unsplash.com/photo-1509062522246-3755977927d7",
-    startTime: "2026-05-06T00:00",
-    endTime: "2026-05-07T23:59",
+    startTime: yesterday,
+    endTime: tomorrow,
     rejectionReason: "",
   },
   {
@@ -40,8 +44,8 @@ export const contentData = [
     teacherId: 1,
     teacherName: "Rahul Teacher",
     preview: "https://images.unsplash.com/photo-1532012197267-da84d127e765",
-    startTime: "2026-05-06T00:00",
-    endTime: "2026-05-07T23:59",
+    startTime: yesterday,
+    endTime: tomorrow,
     rejectionReason: "",
   },
   {
