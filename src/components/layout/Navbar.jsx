@@ -37,7 +37,7 @@ const Navbar = () => {
         <Button
           variant="ghost"
           size="sm"
-          className="text-slate-500 hover:text-rose-600 transition-colors"
+          className="text-slate-500 cursor-pointer hover:text-rose-600 p-5 transition-colors"
           onClick={() => {
             logout();
             navigate("/");

@@ -126,7 +126,7 @@ const PendingApprovalPage = () => {
               <div className="flex gap-2">
                 <Button
                   size="sm"
-                  className="bg-emerald-600 hover:bg-emerald-700 shadow-sm"
+                  className="bg-emerald-600 cursor-pointer hover:bg-emerald-700 shadow-sm"
                   onClick={() => approveMutation.mutate(item.id)}
                 >
                   <Check size={16} className="mr-1" /> Approve
@@ -135,7 +135,7 @@ const PendingApprovalPage = () => {
                 <Button
                   size="sm"
                   variant="outline"
-                  className="text-rose-600 border-rose-200 hover:bg-rose-50 shadow-sm"
+                  className="text-rose-600 cursor-pointer border-rose-200 hover:bg-rose-50 shadow-sm"
                   onClick={() => {
                     setSelectedId(item.id);
                     setModalOpen(true);

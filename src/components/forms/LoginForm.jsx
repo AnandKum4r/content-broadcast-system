@@ -18,10 +18,14 @@ import { loginSchema } from "@/features/auth/utils/loginSchema";
 import { loginUser } from "@/features/auth/services/auth.service";
 import { setAuthData } from "@/features/auth/utils/authStorage";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useState } from "react"; // Add this
+import { Eye, EyeOff } from "lucide-react"; // Add this
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -96,12 +100,26 @@ const LoginForm = () => {
                   </a>
                 </div>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="••••••••"
-                    className="h-11 border-slate-200 focus:ring-2 focus:ring-indigo-500"
-                    {...field}
-                  />
+                  {/* 2. Wrap Input in a relative div and toggle type */}
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      className="h-11 border-slate-200 focus:ring-2 focus:ring-indigo-500 pr-10"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -110,7 +128,7 @@ const LoginForm = () => {
 
           <Button
             type="submit"
-            className="w-full h-11 bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-70"
+            className="w-full cursor-pointer h-11 bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-70"
             disabled={mutation.isPending}
           >
             {mutation.isPending ? (
@@ -162,7 +180,7 @@ const LoginForm = () => {
             form.setValue("email", "teacher@test.com");
             form.setValue("password", "123456");
           }}
-          className="flex flex-col items-start rounded-lg border border-slate-200 p-3 text-left transition-hover hover:bg-slate-100 group"
+          className="flex flex-col cursor-pointer items-start rounded-lg border border-slate-200 p-3 text-left transition-hover hover:bg-slate-100 group"
         >
           <span className="text-xs font-bold text-slate-400 group-hover:text-indigo-600">
             TEACHER
@@ -175,7 +193,7 @@ const LoginForm = () => {
             form.setValue("email", "principal@test.com");
             form.setValue("password", "123456");
           }}
-          className="flex flex-col items-start rounded-lg border border-slate-200 p-3 text-left transition-hover hover:bg-slate-100 group"
+          className="flex flex-col cursor-pointer items-start rounded-lg border border-slate-200 p-3 text-left transition-hover hover:bg-slate-100 group"
         >
           <span className="text-xs font-bold text-slate-400 group-hover:text-indigo-600">
             PRINCIPAL
