@@ -4,9 +4,10 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import Loader from "@/components/common/Loader";
 import EmptyState from "@/components/common/EmptyState";
 import StatusBadge from "@/components/common/StatusBadge";
+import PageHeader from "@/components/common/PageHeader";
 import { Card } from "@/components/ui/card";
 import { getTeacherContent } from "../services/teacher.service";
-import { Calendar, AlertCircle, Book } from "lucide-react";
+import { Calendar, AlertCircle, Book} from "lucide-react";
 
 const MyContentPage = () => {
   const { data, isLoading } = useQuery({
@@ -38,76 +39,84 @@ const MyContentPage = () => {
   return (
     <DashboardLayout>
       <div className="space-y-8 animate-in fade-in duration-500">
-        <div>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900">
-            My Content
-          </h1>
-          <p className="text-slate-500 font-medium mt-1">
-            Manage and track the status of your uploaded media.
-          </p>
-        </div>
+        <PageHeader
+          title="My Content"
+          description="Manage and track the status of your uploaded media."
+        />
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-2">
+        <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
           {data.map((item) => (
             <Card
               key={item.id}
-              className="group overflow-hidden border-slate-200 bg-white transition-all hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-1"
+              className="group flex flex-col overflow-hidden border-slate-200 bg-white transition-all hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1.5"
             >
-              <div className="relative">
+              {/* Media Preview */}
+              <div className="relative aspect-video overflow-hidden">
                 <img
                   src={item.preview}
                   alt={item.title}
-                  className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute top-4 right-4 shadow-sm">
-                  <StatusBadge status={item.status} />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+                  <StatusBadge
+                    status={item.status}
+                    className="shadow-lg backdrop-blur-md"
+                  />
                 </div>
               </div>
 
-              <div className="p-6">
-                <div className="mb-4">
-                  <div className="flex items-center gap-2 text-indigo-600 font-bold text-xs uppercase tracking-widest mb-1">
-                    <Book size={14} />
+              {/* Content Body */}
+              <div className="flex flex-1 flex-col p-5 md:p-6">
+                <div className="mb-3">
+                  <div className="flex items-center gap-2 text-indigo-600 font-bold text-[10px] uppercase tracking-wider mb-1">
+                    <Book size={12} />
                     {item.subject}
                   </div>
-                  <h2 className="text-xl font-bold text-slate-900 line-clamp-1">
+                  <h2 className="text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
                     {item.title}
                   </h2>
                 </div>
 
-                <p className="text-sm text-slate-500 font-medium line-clamp-2 mb-6">
+                <p className="text-sm text-slate-500 leading-relaxed line-clamp-2 mb-6">
                   {item.description}
                 </p>
 
-                <div className="flex items-center justify-between rounded-xl bg-slate-50 p-4 border border-slate-100">
-                  <div className="flex items-center gap-3 text-slate-600">
-                    <Calendar size={16} className="text-slate-400" />
-                    <div className="text-[11px] font-bold leading-tight uppercase">
-                      <span className="block text-slate-400 font-medium">
-                        Timeline
-                      </span>
-                      {item.startTime.split(",")[0]} -{" "}
-                      {item.endTime.split(",")[0]}
+                {/* Meta Info */}
+                <div className="mt-auto space-y-4">
+                  <div className="flex items-center justify-between rounded-xl bg-slate-50 p-3 border border-slate-100">
+                    <div className="flex items-center gap-2.5">
+                      <Calendar size={14} className="text-slate-400" />
+                      <div className="text-[10px] font-bold leading-tight uppercase">
+                        <span className="block text-slate-400 font-medium">
+                          Timeline
+                        </span>
+                        <span className="text-slate-700">
+                          {item.startTime.split(",")[0]} -{" "}
+                          {item.endTime.split(",")[0]}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {item.rejectionReason && (
-                  <div className="mt-4 flex items-start gap-3 rounded-xl bg-rose-50 p-4 border border-rose-100">
-                    <AlertCircle
-                      size={18}
-                      className="text-rose-500 mt-0.5 shrink-0"
-                    />
-                    <div className="text-xs">
-                      <span className="block font-bold text-rose-700 uppercase mb-0.5">
-                        Feedback
-                      </span>
-                      <p className="text-rose-600 font-medium leading-relaxed">
-                        {item.rejectionReason}
-                      </p>
+                  {/* Feedback UI */}
+                  {item.status === "rejected" && item.rejectionReason && (
+                    <div className="flex items-start gap-3 rounded-xl bg-rose-50 p-3 border border-rose-100 animate-in slide-in-from-top-2">
+                      <AlertCircle
+                        size={16}
+                        className="text-rose-500 shrink-0 mt-0.5"
+                      />
+                      <div className="text-xs">
+                        <span className="block font-bold text-rose-700 uppercase mb-0.5">
+                          Feedback
+                        </span>
+                        <p className="text-rose-600 font-medium leading-relaxed italic">
+                          "{item.rejectionReason}"
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </Card>
           ))}

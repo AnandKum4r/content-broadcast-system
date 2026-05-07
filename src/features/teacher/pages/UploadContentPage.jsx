@@ -13,7 +13,7 @@ const UploadContentPage = () => {
           </div>
           <div>
             <h1 className="text-3xl font-black tracking-tight text-slate-900">
-              Publish Content
+              Create New Content
             </h1>
             <p className="text-slate-500 font-medium">
               Add new media to the institutional broadcast queue.

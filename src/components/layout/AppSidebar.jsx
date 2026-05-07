@@ -7,9 +7,10 @@ import {
   FolderOpen,
   ClipboardList,
   Layers,
+  X,
 } from "lucide-react";
 
-const AppSidebar = () => {
+export const SidebarContent = ({ onClose }) => {
   const { user } = useAuth();
 
   const teacherLinks = [
@@ -31,14 +32,18 @@ const AppSidebar = () => {
   const links = user?.role === "teacher" ? teacherLinks : principalLinks;
 
   return (
-    <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-72 border-r border-slate-200 bg-white flex-col">
-      <div className="p-6">
+    <div className="flex flex-col h-full bg-white">
+      <div className="p-6 flex items-center justify-between">
         <div className="flex items-center gap-3 rounded-xl bg-indigo-600 p-3 text-white">
           <div className="h-8 w-8 rounded-lg bg-white/20 flex items-center justify-center font-bold">
             CM
           </div>
           <span className="font-bold tracking-tight">Content Management</span>
         </div>
+        {/* Mobile-only close button */}
+        <button onClick={onClose} className="lg:hidden p-2 text-slate-500">
+          <X size={24} />
+        </button>
       </div>
 
       <nav className="flex-1 space-y-1 px-4">
@@ -46,6 +51,7 @@ const AppSidebar = () => {
           <NavLink
             key={link.path}
             to={link.path}
+            onClick={onClose} // Close sidebar on link click (mobile)
             className={({ isActive }) =>
               `group flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                 isActive
@@ -79,6 +85,14 @@ const AppSidebar = () => {
           System v2.4.0 • 2026
         </div>
       </div>
+    </div>
+  );
+};
+
+const AppSidebar = () => {
+  return (
+    <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-72 border-r border-slate-200 bg-white flex-col">
+      <SidebarContent />
     </aside>
   );
 };
