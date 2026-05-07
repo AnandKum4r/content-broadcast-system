@@ -9,7 +9,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white/80 px-8 backdrop-blur-md">
+    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-slate-200 bg-white/50 px-8 backdrop-blur-xl">
       <div>
         <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
           Institutional Access

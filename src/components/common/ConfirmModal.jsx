@@ -16,7 +16,7 @@ const ConfirmModal = ({ open, onClose, onConfirm }) => {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-rose-100 text-rose-600">
             <AlertTriangle size={24} />
@@ -29,7 +29,7 @@ const ConfirmModal = ({ open, onClose, onConfirm }) => {
         <div className="mt-4 space-y-4">
           <Textarea
             placeholder="e.g., Video quality is low or syllabus mismatch..."
-            className="min-h-[120px] border-slate-200 focus:ring-rose-500"
+            className="min-h-30 border-slate-200 focus:ring-rose-500"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
           />

@@ -36,7 +36,7 @@ const DashboardSkeleton = () => {
           <Skeleton className="h-6 w-32 bg-slate-200" />
           <Skeleton className="h-6 w-24 bg-slate-100" />
         </div>
-        <Skeleton className="h-[400px] w-full rounded-2xl border border-slate-100 bg-white/50 shadow-sm" />
+        <Skeleton className="h-100 w-full rounded-2xl border border-slate-100 bg-white/50 shadow-sm" />
       </div>
     </div>
   );

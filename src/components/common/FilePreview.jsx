@@ -1,6 +1,6 @@
 // src/components/common/FilePreview.jsx
 import { Card } from "@/components/ui/card";
-import { Clock, BookOpen, Layers } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 const FilePreview = ({ item, scheduleStatus }) => {
   const statusStyles = {
@@ -13,7 +13,7 @@ const FilePreview = ({ item, scheduleStatus }) => {
     <Card className="group relative overflow-hidden border-none bg-slate-900 shadow-2xl transition-all duration-300 hover:ring-2 hover:ring-indigo-500/50">
       {/* Header Image Section */}
       <div className="relative h-80 w-full overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/20 z-10" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-transparent to-black/20 z-10" />
         <img
           src={item.preview}
           alt={item.title}
@@ -53,7 +53,7 @@ const FilePreview = ({ item, scheduleStatus }) => {
                 {item.startTime}
               </span>
             </div>
-            <div className="h-6 w-[1px] bg-white/10" />
+            <div className="h-6 w-px bg-white/10" />
             <div className="space-y-1 text-right">
               <span className="block text-[10px] font-bold text-slate-500 uppercase">
                 Ends

@@ -6,7 +6,7 @@ import EmptyState from "@/components/common/EmptyState";
 import FilePreview from "@/components/common/FilePreview";
 import { getScheduleStatus } from "@/utils/getScheduleStatus";
 import { getLiveContent } from "../services/live.service";
-import { Radio, RefreshCw, Users } from "lucide-react";
+import { Radio, RefreshCw } from "lucide-react";
 
 const LivePage = () => {
   const { teacherId } = useParams();
@@ -83,7 +83,7 @@ const LivePage = () => {
               Active Feeds
             </span>
           </div>
-          <div className="h-10 w-[1px] bg-white/10" />
+          <div className="h-10 w-px bg-white/10" />
           <div className="flex flex-col">
             <span className="text-3xl font-black text-indigo-400">HD</span>
             <span className="text-xs font-bold text-slate-500 uppercase">

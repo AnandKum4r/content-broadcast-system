@@ -4,11 +4,13 @@ import AppSidebar from "./AppSidebar";
 
 const DashboardLayout = ({ children }) => {
   return (
-    <div className="flex min-h-screen bg-slate-50/50">
+    <div className="flex h-screen overflow-hidden bg-slate-50/50">
       <AppSidebar />
-      <div className="flex-1 flex flex-col min-w-0">
+
+      <div className="flex-1 lg:ml-72 overflow-y-auto">
         <Navbar />
-        <main className="flex-1 p-4 md:p-8 lg:p-10 transition-all duration-300">
+
+        <main className="p-4 md:p-8 lg:p-10 transition-all duration-300">
           <div className="mx-auto max-w-7xl">{children}</div>
         </main>
       </div>

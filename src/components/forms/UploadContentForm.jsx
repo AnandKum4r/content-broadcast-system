@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ImagePlus, Clock, Info } from "lucide-react";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import {
   Form,
   FormControl,
@@ -26,6 +27,8 @@ const UploadContentForm = () => {
   */
 
   const [preview, setPreview] = useState(null);
+
+  const { user } = useAuth();
 
   /*
     Form setup
@@ -112,13 +115,19 @@ const UploadContentForm = () => {
     Submit handler
   */
 
-  const onSubmit = (values) => {
-    mutation.mutate({
-      ...values,
+ const onSubmit = (values) => {
+   mutation.mutate({
+     ...values,
 
-      preview,
-    });
-  };
+     preview,
+
+     teacherId: user?.id,
+
+     teacherName: user?.name,
+
+     status: "pending",
+   });
+ };
 
   return (
     <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -176,7 +185,7 @@ const UploadContentForm = () => {
                         <FormLabel>Description</FormLabel>
                         <FormControl>
                           <Textarea
-                            className="min-h-[100px]"
+                            className="min-h-25"
                             placeholder="Briefly describe the content purpose..."
                             {...field}
                           />

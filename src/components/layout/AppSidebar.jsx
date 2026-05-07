@@ -31,11 +31,11 @@ const AppSidebar = () => {
   const links = user?.role === "teacher" ? teacherLinks : principalLinks;
 
   return (
-    <aside className="hidden w-72 border-r border-slate-200 bg-white lg:flex flex-col">
+    <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-72 border-r border-slate-200 bg-white flex-col">
       <div className="p-6">
         <div className="flex items-center gap-3 rounded-xl bg-indigo-600 p-3 text-white">
           <div className="h-8 w-8 rounded-lg bg-white/20 flex items-center justify-center font-bold">
-            CP
+            CM
           </div>
           <span className="font-bold tracking-tight">Content Management</span>
         </div>
