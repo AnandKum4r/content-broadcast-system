@@ -49,7 +49,7 @@ const LivePage = () => {
       <header className="border-b border-white/5 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 md:py-4 flex items-center justify-between">
           <div className="flex items-center gap-3 md:gap-4">
-            <div className="flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.4)] flex-shrink-0">
+            <div className="flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.4)] shrink-0">
               <Radio className="text-white animate-pulse" size={18} />
             </div>
             <div className="min-w-0">
@@ -77,7 +77,7 @@ const LivePage = () => {
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 md:py-10">
         {/* Statistics Bar: Scrollable on mobile if needed, or flex-wrapped */}
         <div className="mb-8 md:mb-12 flex items-center gap-6 md:gap-8 border-b border-white/5 pb-6 md:pb-8 overflow-x-auto scrollbar-hide">
-          <div className="flex flex-col flex-shrink-0">
+          <div className="flex flex-col shrink-0">
             <div className="flex items-baseline gap-1">
               <span className="text-2xl md:text-4xl font-black">
                 {content.length}
@@ -89,9 +89,9 @@ const LivePage = () => {
             </span>
           </div>
 
-          <div className="h-8 md:h-10 w-px bg-white/10 flex-shrink-0" />
+          <div className="h-8 md:h-10 w-px bg-white/10 shrink-0" />
 
-          <div className="flex flex-col flex-shrink-0">
+          <div className="flex flex-col shrink-0">
             <span className="text-2xl md:text-4xl font-black text-indigo-400">
               4K
             </span>
@@ -100,9 +100,9 @@ const LivePage = () => {
             </span>
           </div>
 
-          <div className="h-8 md:h-10 w-px bg-white/10 flex-shrink-0 hidden xs:block" />
+          <div className="h-8 md:h-10 w-px bg-white/10 shrink-0 hidden xs:block" />
 
-          <div className="hidden xs:flex flex-col flex-shrink-0">
+          <div className="hidden xs:flex flex-col shrink-0">
             <span className="text-2xl md:text-4xl font-black text-slate-200 flex items-center gap-2">
               <LayoutGrid size={20} className="text-indigo-500" />
               GRID
